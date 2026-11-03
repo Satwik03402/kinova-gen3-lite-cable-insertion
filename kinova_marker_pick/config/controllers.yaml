@@ -1,0 +1,28 @@
+controller_manager:
+  ros__parameters:
+    update_rate: 250
+    use_sim_time: true
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+    joint_trajectory_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+    gen3_lite_2f_gripper_controller:
+      type: position_controllers/GripperActionController
+joint_trajectory_controller:
+  ros__parameters:
+    joints: [joint_1, joint_2, joint_3, joint_4, joint_5, joint_6]
+    command_interfaces: [position]
+    state_interfaces: [position, velocity]
+    constraints:
+      goal_time: 3.0
+      stopped_velocity_tolerance: 0.05
+    state_publish_rate: 50.0
+    action_monitor_rate: 20.0
+gen3_lite_2f_gripper_controller:
+  ros__parameters:
+    joint: right_finger_bottom_joint
+    allow_stalling: true
+    goal_tolerance: 0.02
+    max_effort: 10.0
+    stall_velocity_threshold: 0.02
+    stall_timeout: 1.0

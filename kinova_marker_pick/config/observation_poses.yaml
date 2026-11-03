@@ -1,0 +1,26 @@
+marker_pick:
+  ros__parameters:
+    # Aligned reference poses. World XYZ, metres; RPY, radians.
+    # The observation offsets below displace the actual approach, not the goal.
+    # Pose 1 is the robot tool frame.
+    pickup_observation_xyz: [0.300, -0.120, 0.230]
+    pickup_observation_rpy: [3.141592653589793, 0.0, 1.570796326794897]
+    # Pose 2 is the HELD CONNECTOR frame: 65 mm tip standoff from the wall.
+    # Its corresponding tool pose is computed using the measured grasp offset.
+    # For a nominal grasp, tool XYZ is approximately [0.288, 0.140, 0.250].
+    port_observation_xyz: [0.308, 0.140, 0.250]
+    port_observation_rpy: [0.0, -1.570796326794897, 0.0]
+    # Deliberately start off target so both IBVS stages visibly converge.
+    # Pickup: world X/Y += [+offset, -offset], world yaw += angle.
+    # Wall: world Y/Z += [+offset, -offset], world roll += angle.
+    observation_offset_m: 0.006
+    observation_angle_rad: 0.025
+    pose1_ibvs_axes: [0, 1, 5]  # world X/Y translations, rotation about world Z
+    pose2_ibvs_axes: [1, 2, 3]  # world Y/Z translations, rotation about world X
+    ibvs_pixel_tolerance: 0.9
+    ibvs_gain: 0.7
+    ibvs_damping: 0.0002
+    ibvs_max_step_m: 0.003
+    ibvs_max_step_rad: 0.012
+    ibvs_max_iterations: 30
+    ibvs_timeout_s: 100.0

@@ -1,0 +1,10 @@
+.sim/
+/build/
+/install/
+/log/
+__pycache__/
+.pytest_cache/
+*.pyc
+*.egg-info/
+core
+core.*

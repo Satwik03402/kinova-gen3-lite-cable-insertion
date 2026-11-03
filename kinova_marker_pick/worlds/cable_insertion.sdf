@@ -1,0 +1,1458 @@
+<?xml version='1.0' encoding='utf-8'?>
+<sdf version="1.9">
+  <world name="cable_insertion">
+    <physics name="physics" type="ignored">
+      <max_step_size>0.001</max_step_size>
+      <real_time_factor>1</real_time_factor>
+    </physics>
+    <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics" />
+    <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands" />
+    <plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster" />
+    <plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors">
+      <render_engine>ogre2</render_engine>
+    </plugin>
+    <scene>
+      <ambient>0.7 0.7 0.7 1</ambient>
+      <background>0.88 0.90 0.93 1</background>
+    </scene>
+    <light type="directional" name="sun">
+      <pose>0 0 3 0 0 0</pose>
+      <diffuse>0.9 0.9 0.9 1</diffuse>
+      <direction>-0.3 0.2 -1</direction>
+      <cast_shadows>false</cast_shadows>
+    </light>
+    <gui fullscreen="false">
+      <plugin filename="MinimalScene" name="3D View">
+        <gz-gui>
+          <property type="bool" key="showTitleBar">false</property>
+          <property type="string" key="state">docked</property>
+        </gz-gui>
+        <engine>ogre2</engine>
+        <scene>scene</scene>
+        <ambient_light>0.7 0.7 0.7</ambient_light>
+        <background_color>0.88 0.90 0.93</background_color>
+        <camera_pose>-0.35 -0.65 0.70 0 0.49 0.85</camera_pose>
+      </plugin>
+      <plugin filename="GzSceneManager" name="GzSceneManager">
+        <gz-gui>
+          <property type="bool" key="resizable">false</property>
+          <property type="double" key="width">5</property>
+          <property type="double" key="height">5</property>
+          <property type="string" key="state">floating</property>
+          <property type="bool" key="showTitleBar">false</property>
+        </gz-gui>
+      </plugin>
+      <plugin filename="InteractiveViewControl" name="InteractiveViewControl">
+        <gz-gui>
+          <property type="bool" key="resizable">false</property>
+          <property type="double" key="width">5</property>
+          <property type="double" key="height">5</property>
+          <property type="string" key="state">floating</property>
+          <property type="bool" key="showTitleBar">false</property>
+        </gz-gui>
+      </plugin>
+      <plugin filename="CameraTracking" name="CameraTracking">
+        <gz-gui>
+          <property type="bool" key="resizable">false</property>
+          <property type="double" key="width">5</property>
+          <property type="double" key="height">5</property>
+          <property type="string" key="state">floating</property>
+          <property type="bool" key="showTitleBar">false</property>
+        </gz-gui>
+      </plugin>
+      <plugin filename="WorldControl" name="WorldControl">
+        <gz-gui>
+          <property type="bool" key="resizable">false</property>
+          <property type="bool" key="showTitleBar">false</property>
+          <property type="double" key="height">72</property>
+          <property type="double" key="width">290</property>
+          <property type="double" key="z">1</property>
+          <property type="string" key="state">floating</property>
+          <anchors target="3D View">
+            <line own="left" target="left" />
+            <line own="bottom" target="bottom" />
+          </anchors>
+        </gz-gui>
+        <play_pause>true</play_pause>
+        <step>true</step>
+        <use_event>true</use_event>
+      </plugin>
+      <plugin filename="WorldStats" name="WorldStats">
+        <gz-gui>
+          <property type="bool" key="resizable">false</property>
+          <property type="bool" key="showTitleBar">false</property>
+          <property type="double" key="height">72</property>
+          <property type="double" key="width">290</property>
+          <property type="double" key="z">1</property>
+          <property type="string" key="state">floating</property>
+          <anchors target="3D View">
+            <line own="right" target="right" />
+            <line own="bottom" target="bottom" />
+          </anchors>
+        </gz-gui>
+        <real_time_factor>true</real_time_factor>
+        <sim_time>true</sim_time>
+      </plugin>
+      <plugin filename="ImageDisplay" name="Eye in hand">
+        <gz-gui>
+          <title>Eye in hand</title>
+          <property type="double" key="width">540</property>
+          <property type="double" key="height">500</property>
+          <property type="double" key="x">650</property>
+          <property type="double" key="y">12</property>
+          <property type="double" key="z">2</property>
+          <property type="string" key="state">floating</property>
+        </gz-gui>
+        <topic>/marker_pick/eih_debug_image</topic>
+      </plugin>
+    </gui>
+    <model name="fixtures">
+      <static>true</static>
+      <link name="fixtures">
+        <collision name="floor">
+          <pose>0.25 0 -0.025 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>1.6 1.4 0.05</size>
+            </box>
+          </geometry>
+          <surface>
+            <contact>
+              <collide_bitmask>65535</collide_bitmask>
+            </contact>
+            <friction>
+              <ode>
+                <mu>1.0</mu>
+                <mu2>1.0</mu2>
+              </ode>
+            </friction>
+          </surface>
+        </collision>
+        <visual name="floor">
+          <pose>0.25 0 -0.025 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>1.6 1.4 0.05</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.80 0.83 0.87 1</ambient>
+            <diffuse>0.80 0.83 0.87 1</diffuse>
+          </material>
+        </visual>
+        <collision name="cradle_-1">
+          <pose>0.27899999999999997 -0.12 0.0535 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.006 0.032 0.107</size>
+            </box>
+          </geometry>
+          <surface>
+            <contact>
+              <collide_bitmask>65535</collide_bitmask>
+            </contact>
+            <friction>
+              <ode>
+                <mu>1.0</mu>
+                <mu2>1.0</mu2>
+              </ode>
+            </friction>
+          </surface>
+        </collision>
+        <visual name="cradle_-1">
+          <pose>0.27899999999999997 -0.12 0.0535 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.006 0.032 0.107</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.3 0.32 0.36 1</ambient>
+            <diffuse>0.3 0.32 0.36 1</diffuse>
+          </material>
+        </visual>
+        <collision name="cradle_1">
+          <pose>0.321 -0.12 0.0535 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.006 0.032 0.107</size>
+            </box>
+          </geometry>
+          <surface>
+            <contact>
+              <collide_bitmask>65535</collide_bitmask>
+            </contact>
+            <friction>
+              <ode>
+                <mu>1.0</mu>
+                <mu2>1.0</mu2>
+              </ode>
+            </friction>
+          </surface>
+        </collision>
+        <visual name="cradle_1">
+          <pose>0.321 -0.12 0.0535 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.006 0.032 0.107</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.3 0.32 0.36 1</ambient>
+            <diffuse>0.3 0.32 0.36 1</diffuse>
+          </material>
+        </visual>
+        <collision name="port_x_-1">
+          <pose>0.44 0.14 0.199 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.04 0.2 0.088</size>
+            </box>
+          </geometry>
+          <surface>
+            <contact>
+              <collide_bitmask>65535</collide_bitmask>
+            </contact>
+            <friction>
+              <ode>
+                <mu>1.0</mu>
+                <mu2>1.0</mu2>
+              </ode>
+            </friction>
+          </surface>
+        </collision>
+        <visual name="port_x_-1">
+          <pose>0.44 0.14 0.199 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.04 0.2 0.088</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.14 0.55 0.32 1</ambient>
+            <diffuse>0.14 0.55 0.32 1</diffuse>
+          </material>
+        </visual>
+        <collision name="port_y_-1">
+          <pose>0.44 0.08650000000000002 0.25 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.04 0.093 0.014</size>
+            </box>
+          </geometry>
+          <surface>
+            <contact>
+              <collide_bitmask>65535</collide_bitmask>
+            </contact>
+            <friction>
+              <ode>
+                <mu>1.0</mu>
+                <mu2>1.0</mu2>
+              </ode>
+            </friction>
+          </surface>
+        </collision>
+        <visual name="port_y_-1">
+          <pose>0.44 0.08650000000000002 0.25 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.04 0.093 0.014</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.14 0.55 0.32 1</ambient>
+            <diffuse>0.14 0.55 0.32 1</diffuse>
+          </material>
+        </visual>
+        <collision name="port_x_1">
+          <pose>0.44 0.14 0.301 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.04 0.2 0.088</size>
+            </box>
+          </geometry>
+          <surface>
+            <contact>
+              <collide_bitmask>65535</collide_bitmask>
+            </contact>
+            <friction>
+              <ode>
+                <mu>1.0</mu>
+                <mu2>1.0</mu2>
+              </ode>
+            </friction>
+          </surface>
+        </collision>
+        <visual name="port_x_1">
+          <pose>0.44 0.14 0.301 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.04 0.2 0.088</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.14 0.55 0.32 1</ambient>
+            <diffuse>0.14 0.55 0.32 1</diffuse>
+          </material>
+        </visual>
+        <collision name="port_y_1">
+          <pose>0.44 0.1935 0.25 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.04 0.093 0.014</size>
+            </box>
+          </geometry>
+          <surface>
+            <contact>
+              <collide_bitmask>65535</collide_bitmask>
+            </contact>
+            <friction>
+              <ode>
+                <mu>1.0</mu>
+                <mu2>1.0</mu2>
+              </ode>
+            </friction>
+          </surface>
+        </collision>
+        <visual name="port_y_1">
+          <pose>0.44 0.1935 0.25 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.04 0.093 0.014</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.14 0.55 0.32 1</ambient>
+            <diffuse>0.14 0.55 0.32 1</diffuse>
+          </material>
+        </visual>
+        <collision name="port_back">
+          <pose>0.46199999999999997 0.14 0.25 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.004 0.2 0.19</size>
+            </box>
+          </geometry>
+          <surface>
+            <contact>
+              <collide_bitmask>65535</collide_bitmask>
+            </contact>
+            <friction>
+              <ode>
+                <mu>1.0</mu>
+                <mu2>1.0</mu2>
+              </ode>
+            </friction>
+          </surface>
+        </collision>
+        <visual name="port_back">
+          <pose>0.46199999999999997 0.14 0.25 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.004 0.2 0.19</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.14 0.55 0.32 1</ambient>
+            <diffuse>0.14 0.55 0.32 1</diffuse>
+          </material>
+        </visual>
+        <collision name="hub_stand">
+          <pose>0.45499999999999996 0.14 0.08 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.035 0.06 0.16</size>
+            </box>
+          </geometry>
+          <surface>
+            <contact>
+              <collide_bitmask>65535</collide_bitmask>
+            </contact>
+            <friction>
+              <ode>
+                <mu>1.0</mu>
+                <mu2>1.0</mu2>
+              </ode>
+            </friction>
+          </surface>
+        </collision>
+        <visual name="hub_stand">
+          <pose>0.45499999999999996 0.14 0.08 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.035 0.06 0.16</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.3 0.32 0.36 1</ambient>
+            <diffuse>0.3 0.32 0.36 1</diffuse>
+          </material>
+        </visual>
+        <collision name="hub_base">
+          <pose>0.445 0.14 0.012 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.14 0.24 0.024</size>
+            </box>
+          </geometry>
+          <surface>
+            <contact>
+              <collide_bitmask>65535</collide_bitmask>
+            </contact>
+            <friction>
+              <ode>
+                <mu>1.0</mu>
+                <mu2>1.0</mu2>
+              </ode>
+            </friction>
+          </surface>
+        </collision>
+        <visual name="hub_base">
+          <pose>0.445 0.14 0.012 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.14 0.24 0.024</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.3 0.32 0.36 1</ambient>
+            <diffuse>0.3 0.32 0.36 1</diffuse>
+          </material>
+        </visual>
+        <visual name="marker_8_paper">
+          <pose>0.41979999999999995 0.20500000000000002 0.305 -0.0 -1.5707963267948966 0.0</pose>
+          <geometry>
+            <box>
+              <size>0.042 0.042 0.0002</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+          </material>
+        </visual>
+        <visual name="marker_8_0_0">
+          <pose>0.4196 0.21833333333333335 0.2916666666666667 -0.0 -1.5707963267948966 0.0</pose>
+          <geometry>
+            <box>
+              <size>0.005333333333333333 0.005333333333333333 0.0001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.01 0.01 0.01 1</ambient>
+            <diffuse>0.01 0.01 0.01 1</diffuse>
+          </material>
+        </visual>
+        <visual name="marker_8_0_1">
+          <pose>0.4196 0.21833333333333335 0.297 -0.0 -1.5707963267948966 0.0</pose>
+          <geometry>
+            <box>
+              <size>0.005333333333333333 0.005333333333333333 0.0001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.01 0.01 0.01 1</ambient>
+            <diffuse>0.01 0.01 0.01 1</diffuse>
+          </material>
+        </visual>
+        <visual name="marker_8_0_2">
+          <pose>0.4196 0.21833333333333335 0.30233333333333334 -0.0 -1.5707963267948966 0.0</pose>
+          <geometry>
+            <box>
+              <size>0.005333333333333333 0.005333333333333333 0.0001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.01 0.01 0.01 1</ambient>
+            <diffuse>0.01 0.01 0.01 1</diffuse>
+          </material>
+        </visual>
+        <visual name="marker_8_0_3">
+          <pose>0.4196 0.21833333333333335 0.30766666666666664 -0.0 -1.5707963267948966 0.0</pose>
+          <geometry>
+            <box>
+              <size>0.005333333333333333 0.005333333333333333 0.0001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.01 0.01 0.01 1</ambient>
+            <diffuse>0.01 0.01 0.01 1</diffuse>
+          </material>
+        </visual>
+        <visual name="marker_8_0_4">
+          <pose>0.4196 0.21833333333333335 0.313 -0.0 -1.5707963267948966 0.0</pose>
+          <geometry>
+            <box>
+              <size>0.005333333333333333 0.005333333333333333 0.0001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.01 0.01 0.01 1</ambient>
+            <diffuse>0.01 0.01 0.01 1</diffuse>
+          </material>
+        </visual>
+        <visual name="marker_8_0_5">
+          <pose>0.4196 0.21833333333333335 0.3183333333333333 -0.0 -1.5707963267948966 0.0</pose>
+          <geometry>
+            <box>
+              <size>0.005333333333333333 0.005333333333333333 0.0001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.01 0.01 0.01 1</ambient>
+            <diffuse>0.01 0.01 0.01 1</diffuse>
+          </material>
+        </visual>
+        <visual name="marker_8_1_0">
+          <pose>0.4196 0.21300000000000002 0.2916666666666667 -0.0 -1.5707963267948966 0.0</pose>
+          <geometry>
+            <box>
+              <size>0.005333333333333333 0.005333333333333333 0.0001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.01 0.01 0.01 1</ambient>
+            <diffuse>0.01 0.01 0.01 1</diffuse>
+          </material>
+        </visual>
+        <visual name="marker_8_1_1">
+          <pose>0.4196 0.21300000000000002 0.297 -0.0 -1.5707963267948966 0.0</pose>
+          <geometry>
+            <box>
+              <size>0.005333333333333333 0.005333333333333333 0.0001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+          </material>
+        </visual>
+        <visual name="marker_8_1_2">
+          <pose>0.4196 0.21300000000000002 0.30233333333333334 -0.0 -1.5707963267948966 0.0</pose>
+          <geometry>
+            <box>
+              <size>0.005333333333333333 0.005333333333333333 0.0001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+          </material>
+        </visual>
+        <visual name="marker_8_1_3">
+          <pose>0.4196 0.21300000000000002 0.30766666666666664 -0.0 -1.5707963267948966 0.0</pose>
+          <geometry>
+            <box>
+              <size>0.005333333333333333 0.005333333333333333 0.0001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+          </material>
+        </visual>
+        <visual name="marker_8_1_4">
+          <pose>0.4196 0.21300000000000002 0.313 -0.0 -1.5707963267948966 0.0</pose>
+          <geometry>
+            <box>
+              <size>0.005333333333333333 0.005333333333333333 0.0001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+          </material>
+        </visual>
+        <visual name="marker_8_1_5">
+          <pose>0.4196 0.21300000000000002 0.3183333333333333 -0.0 -1.5707963267948966 0.0</pose>
+          <geometry>
+            <box>
+              <size>0.005333333333333333 0.005333333333333333 0.0001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.01 0.01 0.01 1</ambient>
+            <diffuse>0.01 0.01 0.01 1</diffuse>
+          </material>
+        </visual>
+        <visual name="marker_8_2_0">
+          <pose>0.4196 0.2076666666666667 0.2916666666666667 -0.0 -1.5707963267948966 0.0</pose>
+          <geometry>
+            <box>
+              <size>0.005333333333333333 0.005333333333333333 0.0001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.01 0.01 0.01 1</ambient>
+            <diffuse>0.01 0.01 0.01 1</diffuse>
+          </material>
+        </visual>
+        <visual name="marker_8_2_1">
+          <pose>0.4196 0.2076666666666667 0.297 -0.0 -1.5707963267948966 0.0</pose>
+          <geometry>
+            <box>
+              <size>0.005333333333333333 0.005333333333333333 0.0001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+          </material>
+        </visual>
+        <visual name="marker_8_2_2">
+          <pose>0.4196 0.2076666666666667 0.30233333333333334 -0.0 -1.5707963267948966 0.0</pose>
+          <geometry>
+            <box>
+              <size>0.005333333333333333 0.005333333333333333 0.0001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+          </material>
+        </visual>
+        <visual name="marker_8_2_3">
+          <pose>0.4196 0.2076666666666667 0.30766666666666664 -0.0 -1.5707963267948966 0.0</pose>
+          <geometry>
+            <box>
+              <size>0.005333333333333333 0.005333333333333333 0.0001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+          </material>
+        </visual>
+        <visual name="marker_8_2_4">
+          <pose>0.4196 0.2076666666666667 0.313 -0.0 -1.5707963267948966 0.0</pose>
+          <geometry>
+            <box>
+              <size>0.005333333333333333 0.005333333333333333 0.0001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.01 0.01 0.01 1</ambient>
+            <diffuse>0.01 0.01 0.01 1</diffuse>
+          </material>
+        </visual>
+        <visual name="marker_8_2_5">
+          <pose>0.4196 0.2076666666666667 0.3183333333333333 -0.0 -1.5707963267948966 0.0</pose>
+          <geometry>
+            <box>
+              <size>0.005333333333333333 0.005333333333333333 0.0001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.01 0.01 0.01 1</ambient>
+            <diffuse>0.01 0.01 0.01 1</diffuse>
+          </material>
+        </visual>
+        <visual name="marker_8_3_0">
+          <pose>0.4196 0.20233333333333334 0.2916666666666667 -0.0 -1.5707963267948966 0.0</pose>
+          <geometry>
+            <box>
+              <size>0.005333333333333333 0.005333333333333333 0.0001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.01 0.01 0.01 1</ambient>
+            <diffuse>0.01 0.01 0.01 1</diffuse>
+          </material>
+        </visual>
+        <visual name="marker_8_3_1">
+          <pose>0.4196 0.20233333333333334 0.297 -0.0 -1.5707963267948966 0.0</pose>
+          <geometry>
+            <box>
+              <size>0.005333333333333333 0.005333333333333333 0.0001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+          </material>
+        </visual>
+        <visual name="marker_8_3_2">
+          <pose>0.4196 0.20233333333333334 0.30233333333333334 -0.0 -1.5707963267948966 0.0</pose>
+          <geometry>
+            <box>
+              <size>0.005333333333333333 0.005333333333333333 0.0001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+          </material>
+        </visual>
+        <visual name="marker_8_3_3">
+          <pose>0.4196 0.20233333333333334 0.30766666666666664 -0.0 -1.5707963267948966 0.0</pose>
+          <geometry>
+            <box>
+              <size>0.005333333333333333 0.005333333333333333 0.0001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.01 0.01 0.01 1</ambient>
+            <diffuse>0.01 0.01 0.01 1</diffuse>
+          </material>
+        </visual>
+        <visual name="marker_8_3_4">
+          <pose>0.4196 0.20233333333333334 0.313 -0.0 -1.5707963267948966 0.0</pose>
+          <geometry>
+            <box>
+              <size>0.005333333333333333 0.005333333333333333 0.0001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+          </material>
+        </visual>
+        <visual name="marker_8_3_5">
+          <pose>0.4196 0.20233333333333334 0.3183333333333333 -0.0 -1.5707963267948966 0.0</pose>
+          <geometry>
+            <box>
+              <size>0.005333333333333333 0.005333333333333333 0.0001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.01 0.01 0.01 1</ambient>
+            <diffuse>0.01 0.01 0.01 1</diffuse>
+          </material>
+        </visual>
+        <visual name="marker_8_4_0">
+          <pose>0.4196 0.197 0.2916666666666667 -0.0 -1.5707963267948966 0.0</pose>
+          <geometry>
+            <box>
+              <size>0.005333333333333333 0.005333333333333333 0.0001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.01 0.01 0.01 1</ambient>
+            <diffuse>0.01 0.01 0.01 1</diffuse>
+          </material>
+        </visual>
+        <visual name="marker_8_4_1">
+          <pose>0.4196 0.197 0.297 -0.0 -1.5707963267948966 0.0</pose>
+          <geometry>
+            <box>
+              <size>0.005333333333333333 0.005333333333333333 0.0001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+          </material>
+        </visual>
+        <visual name="marker_8_4_2">
+          <pose>0.4196 0.197 0.30233333333333334 -0.0 -1.5707963267948966 0.0</pose>
+          <geometry>
+            <box>
+              <size>0.005333333333333333 0.005333333333333333 0.0001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.01 0.01 0.01 1</ambient>
+            <diffuse>0.01 0.01 0.01 1</diffuse>
+          </material>
+        </visual>
+        <visual name="marker_8_4_3">
+          <pose>0.4196 0.197 0.30766666666666664 -0.0 -1.5707963267948966 0.0</pose>
+          <geometry>
+            <box>
+              <size>0.005333333333333333 0.005333333333333333 0.0001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+          </material>
+        </visual>
+        <visual name="marker_8_4_4">
+          <pose>0.4196 0.197 0.313 -0.0 -1.5707963267948966 0.0</pose>
+          <geometry>
+            <box>
+              <size>0.005333333333333333 0.005333333333333333 0.0001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.01 0.01 0.01 1</ambient>
+            <diffuse>0.01 0.01 0.01 1</diffuse>
+          </material>
+        </visual>
+        <visual name="marker_8_4_5">
+          <pose>0.4196 0.197 0.3183333333333333 -0.0 -1.5707963267948966 0.0</pose>
+          <geometry>
+            <box>
+              <size>0.005333333333333333 0.005333333333333333 0.0001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.01 0.01 0.01 1</ambient>
+            <diffuse>0.01 0.01 0.01 1</diffuse>
+          </material>
+        </visual>
+        <visual name="marker_8_5_0">
+          <pose>0.4196 0.19166666666666668 0.2916666666666667 -0.0 -1.5707963267948966 0.0</pose>
+          <geometry>
+            <box>
+              <size>0.005333333333333333 0.005333333333333333 0.0001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.01 0.01 0.01 1</ambient>
+            <diffuse>0.01 0.01 0.01 1</diffuse>
+          </material>
+        </visual>
+        <visual name="marker_8_5_1">
+          <pose>0.4196 0.19166666666666668 0.297 -0.0 -1.5707963267948966 0.0</pose>
+          <geometry>
+            <box>
+              <size>0.005333333333333333 0.005333333333333333 0.0001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.01 0.01 0.01 1</ambient>
+            <diffuse>0.01 0.01 0.01 1</diffuse>
+          </material>
+        </visual>
+        <visual name="marker_8_5_2">
+          <pose>0.4196 0.19166666666666668 0.30233333333333334 -0.0 -1.5707963267948966 0.0</pose>
+          <geometry>
+            <box>
+              <size>0.005333333333333333 0.005333333333333333 0.0001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.01 0.01 0.01 1</ambient>
+            <diffuse>0.01 0.01 0.01 1</diffuse>
+          </material>
+        </visual>
+        <visual name="marker_8_5_3">
+          <pose>0.4196 0.19166666666666668 0.30766666666666664 -0.0 -1.5707963267948966 0.0</pose>
+          <geometry>
+            <box>
+              <size>0.005333333333333333 0.005333333333333333 0.0001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.01 0.01 0.01 1</ambient>
+            <diffuse>0.01 0.01 0.01 1</diffuse>
+          </material>
+        </visual>
+        <visual name="marker_8_5_4">
+          <pose>0.4196 0.19166666666666668 0.313 -0.0 -1.5707963267948966 0.0</pose>
+          <geometry>
+            <box>
+              <size>0.005333333333333333 0.005333333333333333 0.0001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.01 0.01 0.01 1</ambient>
+            <diffuse>0.01 0.01 0.01 1</diffuse>
+          </material>
+        </visual>
+        <visual name="marker_8_5_5">
+          <pose>0.4196 0.19166666666666668 0.3183333333333333 -0.0 -1.5707963267948966 0.0</pose>
+          <geometry>
+            <box>
+              <size>0.005333333333333333 0.005333333333333333 0.0001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.01 0.01 0.01 1</ambient>
+            <diffuse>0.01 0.01 0.01 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="marked_connector">
+      <link name="connector">
+        <inertial>
+          <pose>0.018 0 0 0 0 0</pose>
+          <mass>0.06</mass>
+          <inertia>
+            <ixx>1.5e-05</ixx>
+            <iyy>0.00012</iyy>
+            <izz>0.00012</izz>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyz>0</iyz>
+          </inertia>
+        </inertial>
+        <collision name="head">
+          <pose>0 0 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.048 0.04 0.026</size>
+            </box>
+          </geometry>
+          <surface>
+            <contact>
+              <collide_bitmask>2</collide_bitmask>
+            </contact>
+            <friction>
+              <ode>
+                <mu>1.0</mu>
+                <mu2>1.0</mu2>
+              </ode>
+            </friction>
+          </surface>
+        </collision>
+        <visual name="head">
+          <pose>0 0 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.048 0.04 0.026</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.12 0.35 0.55 1</ambient>
+            <diffuse>0.12 0.35 0.55 1</diffuse>
+          </material>
+        </visual>
+        <collision name="peg">
+          <pose>0 0 -0.03 0 0 0</pose>
+          <geometry>
+            <cylinder>
+              <radius>0.004</radius>
+              <length>0.034</length>
+            </cylinder>
+          </geometry>
+          <surface>
+            <contact>
+              <collide_bitmask>2</collide_bitmask>
+            </contact>
+            <friction>
+              <ode>
+                <mu>1.0</mu>
+                <mu2>1.0</mu2>
+              </ode>
+            </friction>
+          </surface>
+        </collision>
+        <visual name="peg">
+          <pose>0 0 -0.03 0 0 0</pose>
+          <geometry>
+            <cylinder>
+              <radius>0.004</radius>
+              <length>0.034</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.7 0.75 0.8 1</ambient>
+            <diffuse>0.7 0.75 0.8 1</diffuse>
+          </material>
+        </visual>
+        <collision name="cable">
+          <pose>0.082 0 0.003 0 1.57079632679 0</pose>
+          <geometry>
+            <cylinder>
+              <radius>0.003</radius>
+              <length>0.12</length>
+            </cylinder>
+          </geometry>
+          <surface>
+            <contact>
+              <collide_bitmask>2</collide_bitmask>
+            </contact>
+            <friction>
+              <ode>
+                <mu>1.0</mu>
+                <mu2>1.0</mu2>
+              </ode>
+            </friction>
+          </surface>
+        </collision>
+        <visual name="cable">
+          <pose>0.082 0 0.003 0 1.57079632679 0</pose>
+          <geometry>
+            <cylinder>
+              <radius>0.003</radius>
+              <length>0.12</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.95 0.6 0.06 1</ambient>
+            <diffuse>0.95 0.6 0.06 1</diffuse>
+          </material>
+        </visual>
+        <visual name="marker_7_paper">
+          <pose>0 0 0.0132 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.042 0.042 0.0002</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+          </material>
+        </visual>
+        <visual name="marker_7_0_0">
+          <pose>-0.013333333333333334 0.013333333333333334 0.0134 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.005333333333333333 0.005333333333333333 0.0001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.01 0.01 0.01 1</ambient>
+            <diffuse>0.01 0.01 0.01 1</diffuse>
+          </material>
+        </visual>
+        <visual name="marker_7_0_1">
+          <pose>-0.008 0.013333333333333334 0.0134 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.005333333333333333 0.005333333333333333 0.0001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.01 0.01 0.01 1</ambient>
+            <diffuse>0.01 0.01 0.01 1</diffuse>
+          </material>
+        </visual>
+        <visual name="marker_7_0_2">
+          <pose>-0.0026666666666666666 0.013333333333333334 0.0134 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.005333333333333333 0.005333333333333333 0.0001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.01 0.01 0.01 1</ambient>
+            <diffuse>0.01 0.01 0.01 1</diffuse>
+          </material>
+        </visual>
+        <visual name="marker_7_0_3">
+          <pose>0.0026666666666666666 0.013333333333333334 0.0134 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.005333333333333333 0.005333333333333333 0.0001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.01 0.01 0.01 1</ambient>
+            <diffuse>0.01 0.01 0.01 1</diffuse>
+          </material>
+        </visual>
+        <visual name="marker_7_0_4">
+          <pose>0.008 0.013333333333333334 0.0134 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.005333333333333333 0.005333333333333333 0.0001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.01 0.01 0.01 1</ambient>
+            <diffuse>0.01 0.01 0.01 1</diffuse>
+          </material>
+        </visual>
+        <visual name="marker_7_0_5">
+          <pose>0.013333333333333334 0.013333333333333334 0.0134 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.005333333333333333 0.005333333333333333 0.0001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.01 0.01 0.01 1</ambient>
+            <diffuse>0.01 0.01 0.01 1</diffuse>
+          </material>
+        </visual>
+        <visual name="marker_7_1_0">
+          <pose>-0.013333333333333334 0.008 0.0134 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.005333333333333333 0.005333333333333333 0.0001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.01 0.01 0.01 1</ambient>
+            <diffuse>0.01 0.01 0.01 1</diffuse>
+          </material>
+        </visual>
+        <visual name="marker_7_1_1">
+          <pose>-0.008 0.008 0.0134 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.005333333333333333 0.005333333333333333 0.0001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+          </material>
+        </visual>
+        <visual name="marker_7_1_2">
+          <pose>-0.0026666666666666666 0.008 0.0134 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.005333333333333333 0.005333333333333333 0.0001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+          </material>
+        </visual>
+        <visual name="marker_7_1_3">
+          <pose>0.0026666666666666666 0.008 0.0134 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.005333333333333333 0.005333333333333333 0.0001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.01 0.01 0.01 1</ambient>
+            <diffuse>0.01 0.01 0.01 1</diffuse>
+          </material>
+        </visual>
+        <visual name="marker_7_1_4">
+          <pose>0.008 0.008 0.0134 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.005333333333333333 0.005333333333333333 0.0001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.01 0.01 0.01 1</ambient>
+            <diffuse>0.01 0.01 0.01 1</diffuse>
+          </material>
+        </visual>
+        <visual name="marker_7_1_5">
+          <pose>0.013333333333333334 0.008 0.0134 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.005333333333333333 0.005333333333333333 0.0001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.01 0.01 0.01 1</ambient>
+            <diffuse>0.01 0.01 0.01 1</diffuse>
+          </material>
+        </visual>
+        <visual name="marker_7_2_0">
+          <pose>-0.013333333333333334 0.0026666666666666666 0.0134 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.005333333333333333 0.005333333333333333 0.0001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.01 0.01 0.01 1</ambient>
+            <diffuse>0.01 0.01 0.01 1</diffuse>
+          </material>
+        </visual>
+        <visual name="marker_7_2_1">
+          <pose>-0.008 0.0026666666666666666 0.0134 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.005333333333333333 0.005333333333333333 0.0001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.01 0.01 0.01 1</ambient>
+            <diffuse>0.01 0.01 0.01 1</diffuse>
+          </material>
+        </visual>
+        <visual name="marker_7_2_2">
+          <pose>-0.0026666666666666666 0.0026666666666666666 0.0134 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.005333333333333333 0.005333333333333333 0.0001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+          </material>
+        </visual>
+        <visual name="marker_7_2_3">
+          <pose>0.0026666666666666666 0.0026666666666666666 0.0134 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.005333333333333333 0.005333333333333333 0.0001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.01 0.01 0.01 1</ambient>
+            <diffuse>0.01 0.01 0.01 1</diffuse>
+          </material>
+        </visual>
+        <visual name="marker_7_2_4">
+          <pose>0.008 0.0026666666666666666 0.0134 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.005333333333333333 0.005333333333333333 0.0001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.01 0.01 0.01 1</ambient>
+            <diffuse>0.01 0.01 0.01 1</diffuse>
+          </material>
+        </visual>
+        <visual name="marker_7_2_5">
+          <pose>0.013333333333333334 0.0026666666666666666 0.0134 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.005333333333333333 0.005333333333333333 0.0001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.01 0.01 0.01 1</ambient>
+            <diffuse>0.01 0.01 0.01 1</diffuse>
+          </material>
+        </visual>
+        <visual name="marker_7_3_0">
+          <pose>-0.013333333333333334 -0.0026666666666666666 0.0134 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.005333333333333333 0.005333333333333333 0.0001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.01 0.01 0.01 1</ambient>
+            <diffuse>0.01 0.01 0.01 1</diffuse>
+          </material>
+        </visual>
+        <visual name="marker_7_3_1">
+          <pose>-0.008 -0.0026666666666666666 0.0134 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.005333333333333333 0.005333333333333333 0.0001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+          </material>
+        </visual>
+        <visual name="marker_7_3_2">
+          <pose>-0.0026666666666666666 -0.0026666666666666666 0.0134 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.005333333333333333 0.005333333333333333 0.0001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+          </material>
+        </visual>
+        <visual name="marker_7_3_3">
+          <pose>0.0026666666666666666 -0.0026666666666666666 0.0134 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.005333333333333333 0.005333333333333333 0.0001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+          </material>
+        </visual>
+        <visual name="marker_7_3_4">
+          <pose>0.008 -0.0026666666666666666 0.0134 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.005333333333333333 0.005333333333333333 0.0001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+          </material>
+        </visual>
+        <visual name="marker_7_3_5">
+          <pose>0.013333333333333334 -0.0026666666666666666 0.0134 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.005333333333333333 0.005333333333333333 0.0001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.01 0.01 0.01 1</ambient>
+            <diffuse>0.01 0.01 0.01 1</diffuse>
+          </material>
+        </visual>
+        <visual name="marker_7_4_0">
+          <pose>-0.013333333333333334 -0.008 0.0134 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.005333333333333333 0.005333333333333333 0.0001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.01 0.01 0.01 1</ambient>
+            <diffuse>0.01 0.01 0.01 1</diffuse>
+          </material>
+        </visual>
+        <visual name="marker_7_4_1">
+          <pose>-0.008 -0.008 0.0134 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.005333333333333333 0.005333333333333333 0.0001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.01 0.01 0.01 1</ambient>
+            <diffuse>0.01 0.01 0.01 1</diffuse>
+          </material>
+        </visual>
+        <visual name="marker_7_4_2">
+          <pose>-0.0026666666666666666 -0.008 0.0134 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.005333333333333333 0.005333333333333333 0.0001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.01 0.01 0.01 1</ambient>
+            <diffuse>0.01 0.01 0.01 1</diffuse>
+          </material>
+        </visual>
+        <visual name="marker_7_4_3">
+          <pose>0.0026666666666666666 -0.008 0.0134 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.005333333333333333 0.005333333333333333 0.0001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+          </material>
+        </visual>
+        <visual name="marker_7_4_4">
+          <pose>0.008 -0.008 0.0134 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.005333333333333333 0.005333333333333333 0.0001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.01 0.01 0.01 1</ambient>
+            <diffuse>0.01 0.01 0.01 1</diffuse>
+          </material>
+        </visual>
+        <visual name="marker_7_4_5">
+          <pose>0.013333333333333334 -0.008 0.0134 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.005333333333333333 0.005333333333333333 0.0001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.01 0.01 0.01 1</ambient>
+            <diffuse>0.01 0.01 0.01 1</diffuse>
+          </material>
+        </visual>
+        <visual name="marker_7_5_0">
+          <pose>-0.013333333333333334 -0.013333333333333334 0.0134 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.005333333333333333 0.005333333333333333 0.0001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.01 0.01 0.01 1</ambient>
+            <diffuse>0.01 0.01 0.01 1</diffuse>
+          </material>
+        </visual>
+        <visual name="marker_7_5_1">
+          <pose>-0.008 -0.013333333333333334 0.0134 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.005333333333333333 0.005333333333333333 0.0001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.01 0.01 0.01 1</ambient>
+            <diffuse>0.01 0.01 0.01 1</diffuse>
+          </material>
+        </visual>
+        <visual name="marker_7_5_2">
+          <pose>-0.0026666666666666666 -0.013333333333333334 0.0134 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.005333333333333333 0.005333333333333333 0.0001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.01 0.01 0.01 1</ambient>
+            <diffuse>0.01 0.01 0.01 1</diffuse>
+          </material>
+        </visual>
+        <visual name="marker_7_5_3">
+          <pose>0.0026666666666666666 -0.013333333333333334 0.0134 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.005333333333333333 0.005333333333333333 0.0001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.01 0.01 0.01 1</ambient>
+            <diffuse>0.01 0.01 0.01 1</diffuse>
+          </material>
+        </visual>
+        <visual name="marker_7_5_4">
+          <pose>0.008 -0.013333333333333334 0.0134 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.005333333333333333 0.005333333333333333 0.0001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.01 0.01 0.01 1</ambient>
+            <diffuse>0.01 0.01 0.01 1</diffuse>
+          </material>
+        </visual>
+        <visual name="marker_7_5_5">
+          <pose>0.013333333333333334 -0.013333333333333334 0.0134 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.005333333333333333 0.005333333333333333 0.0001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.01 0.01 0.01 1</ambient>
+            <diffuse>0.01 0.01 0.01 1</diffuse>
+          </material>
+        </visual>
+      </link>
+      <pose>0.3 -0.12 0.12 0 0 0</pose>
+      <plugin filename="gz-sim-pose-publisher-system" name="gz::sim::systems::PosePublisher">
+        <publish_link_pose>false</publish_link_pose>
+        <publish_model_pose>true</publish_model_pose>
+        <use_pose_vector_msg>false</use_pose_vector_msg>
+        <update_frequency>30</update_frequency>
+      </plugin>
+    </model>
+    <model name="overhead_camera">
+      <static>true</static>
+      <pose>0.32 0.0 1.05 0 1.57079632679 0</pose>
+      <link name="camera">
+        <sensor name="camera" type="camera">
+          <topic>/camera/image</topic>
+          <gz_frame_id>overhead_camera_optical_frame</gz_frame_id>
+          <update_rate>15</update_rate>
+          <always_on>true</always_on>
+          <camera>
+            <camera_info_topic>/camera/camera_info</camera_info_topic>
+            <horizontal_fov>1.04719755</horizontal_fov>
+            <image>
+              <width>1280</width>
+              <height>960</height>
+              <format>R8G8B8</format>
+            </image>
+            <clip>
+              <near>0.05</near>
+              <far>3</far>
+            </clip>
+          </camera>
+        </sensor>
+      </link>
+    </model>
+  </world>
+</sdf>
